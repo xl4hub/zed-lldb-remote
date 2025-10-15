@@ -1,0 +1,124 @@
+{
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "string",
+      "enum": [
+        "attach",
+        "launch"
+      ],
+      "default": "attach"
+    },
+    "target": {
+      "type": "string",
+      "description": "tcp://HOST:PORT for lldb-server gdbserver"
+    },
+    "program": {
+      "type": "string",
+      "description": "Optional; basename is fine for remote attach"
+    },
+    "pid": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "args": {
+      "type": [
+        "array",
+        "string"
+      ]
+    },
+    "cwd": {
+      "type": "string"
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "pathMappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "localRoot": {
+            "type": "string"
+          },
+          "remoteRoot": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "localRoot",
+          "remoteRoot"
+        ]
+      }
+    },
+    "stopOnEntry": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "request"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "request": {
+            "const": "attach"
+          },
+          "target": {
+            "pattern": "^tcp://"
+          }
+        },
+        "required": [
+          "request",
+          "target"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "pid",
+            "program"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request": {
+            "const": "attach"
+          }
+        },
+        "required": [
+          "request"
+        ]
+      },
+      "then": {
+        "oneOf": [
+          {
+            "required": [
+              "pid"
+            ]
+          },
+          {
+            "required": [
+              "program"
+            ]
+          },
+          {
+            "required": [
+              "target"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

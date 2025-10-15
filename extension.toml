@@ -1,0 +1,10 @@
+id = "lldb-remote"
+name = "LLDB Remote (TCP Attach)"
+description = "Remote LLDB debugging via TCP. Connect to lldb-server instances for embedded and cross-platform debugging with full source mapping support."
+version = "0.0.2"
+schema_version = 1
+authors = ["Excelfore info@excelfore.com"]
+repository = "https://github.com/xl4hub/zed-lldb-remote"
+
+[debug_adapters.lldb-remote]
+schema_path = "debug_adapter_schemas/lldb-remote.json"
